@@ -13,8 +13,6 @@ class TriangulacaoDelaunay:
 
     def realiza_triangulacao(self, pontos: list[Ponto]):
         triangulo_envolvente = self._cria_triangulo_envolvente(pontos)
-        self._atualiza_incidencia_arestas(triangulo_envolvente)
-
         random.shuffle(pontos)
         dag = TriangulacaoDAG(triangulo_envolvente)
 
@@ -24,11 +22,10 @@ class TriangulacaoDelaunay:
             triangulos = sub_dag.triangulo.subdivide(ponto)
             for triangulo in triangulos:
                 self._atualiza_incidencia_arestas(triangulo)
+                self._checa_arestas_legais(ponto, triangulo)
 
             sub_sub_dags = [TriangulacaoDAG(triangulo) for triangulo in triangulos]
             sub_dag.sub_dags = sub_sub_dags
-
-
 
     @staticmethod
     def _cria_triangulo_envolvente(pontos: list[Ponto]) -> Triangulo:
@@ -48,7 +45,7 @@ class TriangulacaoDelaunay:
         semi_lado = max(coord_x_max - coord_x_min, coord_y_max - coord_y_min) / 2
 
         ponto_triangulo_1 = Ponto(x=centro.coord_x - 3*semi_lado, y=centro.coord_y - 3*semi_lado)
-        ponto_triangulo_2 = Ponto(x=centro.coord_x + 3 * semi_lado, y=centro.coord_y)
+        ponto_triangulo_2 = Ponto(x=centro.coord_x + 3*semi_lado, y=centro.coord_y)
         ponto_triangulo_3 = Ponto(x=centro.coord_x, y=centro.coord_y + 3*semi_lado)
 
         triangulo_envolvente = Triangulo([ponto_triangulo_1, ponto_triangulo_2, ponto_triangulo_3])
@@ -78,3 +75,13 @@ class TriangulacaoDelaunay:
 
         assert False, "Ponto tem que pertencer a um triângulo da DAG!"
 
+    def _checa_arestas_legais(self, ponto: Ponto, triangulo: Triangulo) -> bool:
+        par_vertices_comum = set(triangulo.vertices) - {ponto}
+        triangulo_incidente = self._incidencia_arestas.get(frozenset(par_vertices_comum))
+
+        if len(triangulo_incidente) == 1:
+            return True
+
+
+
+        print("hi")
