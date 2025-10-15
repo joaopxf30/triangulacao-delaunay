@@ -16,6 +16,9 @@ class Ponto:
 
         return self.__key() == ponto.__key()
 
+    def __hash__(self):
+        return hash(self.__key())
+
     def __add__(self, vetor: Vetor) -> "Ponto":
         if not isinstance(vetor, Vetor):
             raise TypeError("Operando deve ser da classe Vetor")

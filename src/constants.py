@@ -6,3 +6,7 @@ class Orientacao(Enum):
     DIREITA = auto()
     ESQUERDA = auto()
 
+
+class Classificacao(Enum):
+    LEGAL = auto()
+    ILEGAL = auto()

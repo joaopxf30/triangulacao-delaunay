@@ -1,4 +1,7 @@
-from src.dominio import Ponto
+from collections import defaultdict
+
+from src.constants import Orientacao
+from src.dominio import Ponto, Segmento
 from src.dominio import Poligono
 
 
@@ -9,6 +12,16 @@ class Triangulo(Poligono):
 
         super().__init__(vertices)
 
-        self.vertice_anterior = self.vertices[0]
-        self.vertice = self.vertices[1]
-        self.vertice_posterior = self.vertices[-1]
+    def localiza_ponto_interno(self, ponto: Ponto) -> bool:
+        for aresta in self.arestas:
+            if aresta.localiza_ponto(ponto) != Orientacao.ESQUERDA:
+                return False
+
+        return True
+
+    def subdivide(self, ponto: Ponto) -> list["Triangulo"]:
+        triangulo_1 = Triangulo([ponto, self.vertices[0], self.vertices[1]])
+        triangulo_2 = Triangulo([ponto, self.vertices[1], self.vertices[2]])
+        triangulo_3 = Triangulo([ponto, self.vertices[2], self.vertices[0]])
+
+        return [triangulo_1, triangulo_2, triangulo_3]
