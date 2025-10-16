@@ -27,4 +27,4 @@ def plota_triangulacao(pontos: list[Ponto], triangulacao: list[Triangulo]):
 
     ax.set_aspect("equal")
 
-    plt.show()
+    plt.show(block=False)

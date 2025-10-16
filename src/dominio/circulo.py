@@ -11,13 +11,6 @@ class Circulo:
         return f"Centro: {(self.centro.coord_x,self.centro.coord_y)}, Raio: {self.raio}"
 
     @staticmethod
-    def inicializa_por_dois_pontos(ponto_1: Ponto, ponto_2: Ponto) -> "Circulo":
-        centro = ponto_1.busca_ponto_medio(ponto_2)
-        raio = (ponto_1 - ponto_2).calcula_norma_euclidiana() / 2
-
-        return Circulo(centro, raio)
-
-    @staticmethod
     def inicializa_por_tres_pontos(ponto_1: Ponto, ponto_2: Ponto, ponto_3: Ponto) -> "Circulo":
         """ Gera um circuncírculo formado pelos três pontos informados. A determinação
         do centro do círculo é feito resolvendo o sistema de equações formado a partir

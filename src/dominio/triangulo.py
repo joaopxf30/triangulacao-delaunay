@@ -12,6 +12,15 @@ class Triangulo(Poligono):
 
         super().__init__(vertices)
 
+    def __key(self):
+        return self.vertices[0], self.vertices[1], self.vertices[2]
+
+    def __hash__(self):
+        return hash(self.__key())
+
+    def __eq__(self, triangulo):
+        return self.__key() == triangulo.__key()
+
     def localiza_ponto_interno(self, ponto: Ponto) -> bool:
         for aresta in self.arestas:
             if aresta.localiza_ponto(ponto) != Orientacao.ESQUERDA:
