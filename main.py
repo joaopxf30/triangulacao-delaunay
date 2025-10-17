@@ -5,7 +5,7 @@ from src.triangulos_por_aresta import TriangulosPorAresta
 
 if __name__ == '__main__':
     pontos = gera_nuvem_pontos(
-        numero_pontos=50,
+        numero_pontos=10,
         circulo=Circulo(
             centro=Ponto(x=-15.0, y=-0.0),
             raio=3

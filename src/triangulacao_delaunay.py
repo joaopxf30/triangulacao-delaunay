@@ -40,7 +40,11 @@ class TriangulacaoDelaunay:
                     if not self._checa_legalidade_aresta(ponto_comparacao, triangulo):
                         triangulo_adjacente_1 = triangulos_adjacentes[0]
                         triangulo_adjacente_2 = triangulos_adjacentes[1]
-                        sub_dags = self._vira_aresta(triangulos_adjacentes.copy(), vertices)
+                        sub_dags = self._vira_aresta(
+                            triangulo_adjacente_1,
+                            triangulo_adjacente_2,
+                            vertices
+                        )
                         dag.atualiza_mapeamento(triangulo_adjacente_1, sub_dags)
                         dag.atualiza_mapeamento(triangulo_adjacente_2, sub_dags)
 
@@ -105,23 +109,24 @@ class TriangulacaoDelaunay:
 
     def _vira_aresta(
         self,
-        triangulos_adjacentes: list[Triangulo],
+        triangulo_adjacente_1: Triangulo,
+        triangulo_adjacente_2: Triangulo,
         vertices: frozenset[Ponto]
     ) -> list[TriangulacaoDAG]:
 
         plota_triangulacao([], self._estrutura_dados.obtem_todos_triangulos())
 
-        self._estrutura_dados.remove(triangulos_adjacentes[0])
-        self._estrutura_dados.remove(triangulos_adjacentes[1])
+        self._estrutura_dados.remove(triangulo_adjacente_1)
+        self._estrutura_dados.remove(triangulo_adjacente_2)
 
         triangulo_1 = self._constroi_novo_triangulo(
-            triangulos_adjacentes[0],
-            triangulos_adjacentes[1],
+            triangulo_adjacente_1,
+            triangulo_adjacente_2,
             vertices
         )
         triangulo_2 = self._constroi_novo_triangulo(
-            triangulos_adjacentes[1],
-            triangulos_adjacentes[0],
+            triangulo_adjacente_2,
+            triangulo_adjacente_1,
             vertices
         )
 
