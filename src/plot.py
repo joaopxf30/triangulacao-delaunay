@@ -28,3 +28,38 @@ def plota_triangulacao(pontos: list[Ponto], triangulacao: list[Triangulo]):
     ax.set_aspect("equal")
 
     plt.show(block=False)
+
+
+def plota_triangulacao_2(pontos: list[Ponto], triangulacao: list[Triangulo], triangulo: Triangulo):
+    fig, ax = plt.subplots()
+
+    vertices_triangulos = []
+    for vertices_triangulo in triangulacao:
+        vertices = []
+        for vertice_poligono in vertices_triangulo.vertices:
+            vertices.append((vertice_poligono.coord_x, vertice_poligono.coord_y))
+
+        vertices_triangulos.append(vertices)
+
+    for vertices_triangulo in vertices_triangulos:
+        triangulo_plot = Polygon(vertices_triangulo, closed=True, edgecolor="black", facecolor="lightcoral")
+        ax.add_patch(triangulo_plot)
+
+    vertices = []
+    for vertice in triangulo.vertices:
+        vertices.append((vertice.coord_x, vertice.coord_y))
+
+    triangulo_plot = Polygon(vertices, closed=True, edgecolor="black", facecolor="gray")
+    ax.add_patch(triangulo_plot)
+
+    coords_x = [ponto.coord_x for ponto in pontos]
+    coords_y = [ponto.coord_y for ponto in pontos]
+    ax.plot(coords_x, coords_y, "x", color="blue")
+
+    ax.set_xlabel(r"$x$", fontsize=12)
+    ax.set_ylabel(r"$y$", fontsize=12)
+
+    ax.set_aspect("equal")
+
+    plt.show(block=False)
+
