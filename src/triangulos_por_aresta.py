@@ -25,12 +25,18 @@ class TriangulosPorAresta:
 
         return triangulos
 
-    def obtem_todos_triangulos(self) -> list[Triangulo]:
+    def obtem_todos_triangulos(self) -> set[Triangulo]:
         todos_triangulos = []
         for triangulos in self._triangulos_por_aresta.values():
             todos_triangulos.extend(triangulos)
 
-        return todos_triangulos
+        return set(todos_triangulos)
+
+    def remove_vertice(self, vertice: Ponto):
+        for vertices, triangulos in self._triangulos_por_aresta.items():
+            if vertice in vertices:
+                for triangulo in list(triangulos):
+                    self.remove(triangulo)
 
     @staticmethod
     def _usa_par_vertices(aresta: Segmento) -> frozenset[Ponto]:

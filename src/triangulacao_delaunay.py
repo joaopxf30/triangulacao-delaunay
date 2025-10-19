@@ -1,8 +1,6 @@
 import random
-
 from src.dominio import Ponto, Circulo
 from src.dominio import Triangulo
-from src.plot import plota_triangulacao, plota_triangulacao_2
 from src.triangulacao_dag import TriangulacaoDAG
 from src.triangulos_por_aresta import TriangulosPorAresta
 
@@ -11,16 +9,15 @@ class TriangulacaoDelaunay:
     def __init__(self, estrutura_dados: TriangulosPorAresta):
         self._estrutura_dados = estrutura_dados
 
-    def realiza_triangulacao(self, pontos: list[Ponto]):
-        triangulo_envolvente = self._cria_triangulo_envolvente(pontos)
-        self._estrutura_dados.adiciona(triangulo_envolvente)
-        dag = TriangulacaoDAG(triangulo_envolvente)
+    def realiza_triangulacao(self, pontos: list[Ponto]) -> set[Triangulo]:
+        triangulo_envolvente_inicial = self._cria_triangulo_envolvente(pontos)
+        self._estrutura_dados.adiciona(triangulo_envolvente_inicial)
+        dag = TriangulacaoDAG(triangulo_envolvente_inicial)
         random.shuffle(pontos)
 
         for ponto in pontos:
             sub_dag = dag.localiza_ponto(ponto)
             triangulo_envolvente = sub_dag.triangulo
-            plota_triangulacao_2([ponto], self._estrutura_dados.obtem_todos_triangulos(), triangulo_envolvente)
             self._estrutura_dados.remove(triangulo_envolvente)
             triangulos = triangulo_envolvente.subdivide(ponto)
 
@@ -34,10 +31,14 @@ class TriangulacaoDelaunay:
             sub_dag.sub_dags = sub_sub_dags
             dag.atualiza_mapeamento(triangulo_envolvente, sub_sub_dags)
 
-            plota_triangulacao([ponto], self._estrutura_dados.obtem_todos_triangulos())
-
             for triangulo in triangulos:
                 self._realiza_triangulacao(triangulo, ponto, dag)
+
+        vertices_remover = triangulo_envolvente_inicial.vertices
+        for vertice in vertices_remover:
+            self._estrutura_dados.remove_vertice(vertice)
+
+        return self._estrutura_dados.obtem_todos_triangulos()
 
     def _realiza_triangulacao(self, triangulo: Triangulo, ponto: Ponto, dag: TriangulacaoDAG):
         vertices = self._retorna_vertices_complementares(triangulo, ponto)
@@ -47,8 +48,6 @@ class TriangulacaoDelaunay:
             if not self._checa_legalidade_aresta(ponto_comparacao, triangulo):
                 triangulo_adjacente_1 = triangulos_adjacentes[0]
                 triangulo_adjacente_2 = triangulos_adjacentes[1]
-
-                plota_triangulacao_2([ponto], self._estrutura_dados.obtem_todos_triangulos(), triangulo)
 
                 novo_triangulo_1, novo_triangulo_2 = self._vira_aresta(
                     triangulo_adjacente_1,
@@ -60,18 +59,13 @@ class TriangulacaoDelaunay:
                 sub_dag_2 = TriangulacaoDAG(novo_triangulo_2)
                 sub_dags = [sub_dag_1, sub_dag_2]
 
-
-                plota_triangulacao_2([ponto], self._estrutura_dados.obtem_todos_triangulos(), sub_dags[0].triangulo)
-                plota_triangulacao_2([ponto], self._estrutura_dados.obtem_todos_triangulos(), sub_dags[1].triangulo)
-
                 dag.atualiza_mapeamento(novo_triangulo_1, sub_dag_1.sub_dags)
                 dag.atualiza_mapeamento(novo_triangulo_2, sub_dag_2.sub_dags)
                 dag.atualiza_mapeamento(triangulo_adjacente_1, sub_dags)
                 dag.atualiza_mapeamento(triangulo_adjacente_2, sub_dags)
 
-                for vertice in vertices:
-                    self._realiza_triangulacao(novo_triangulo_1, vertice, dag)
-                    self._realiza_triangulacao(novo_triangulo_2, vertice, dag)
+                self._realiza_triangulacao(novo_triangulo_1, ponto, dag)
+                self._realiza_triangulacao(novo_triangulo_2, ponto, dag)
 
     @staticmethod
     def _cria_triangulo_envolvente(pontos: list[Ponto]) -> Triangulo:
