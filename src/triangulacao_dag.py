@@ -7,9 +7,10 @@ class TriangulacaoDAG:
         triangulo: Triangulo,
         sub_dags: list["TriangulacaoDAG"] = None
     ):
+        self.mapeamento = {}
         self.triangulo = triangulo
         self.sub_dags = self.__criacao_subdags(sub_dags)
-        self.mapeamento = {}
+        self.atualiza_mapeamento(triangulo, self.sub_dags)
 
     @staticmethod
     def __criacao_subdags(subdags: list["TriangulacaoDAG"] | None):
