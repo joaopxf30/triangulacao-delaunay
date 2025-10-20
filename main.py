@@ -5,7 +5,7 @@ from src.plot import plota_triangulacao, plota_pontos, plota_analise_complexidad
 from src.triangulacao_delaunay import TriangulacaoDelaunay
 from src.triangulos_por_aresta import TriangulosPorAresta
 
-TAMANHOS = list(range(10000, 21000, 10000))
+TAMANHOS = list(range(10000, 510000, 10000))
 
 
 def triangula(_pontos: list[Ponto]) -> float:
