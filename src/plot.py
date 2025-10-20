@@ -42,3 +42,20 @@ def plota_pontos(pontos: list[Ponto]):
     ax.set_aspect("equal")
 
     plt.show()
+
+
+def plota_analise_complexidade(tamanhos, tempos):
+    plt.plot(tamanhos, tempos, marker='o', linestyle='-', color='blue')
+    plt.title(r"Análise do limite superior assintótico", fontsize=14)
+
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
+
+    plt.xlabel("$n$", fontsize=14)
+    plt.ylabel(r"Tempo de CPU ($s$)", fontsize=14)
+
+    plt.grid(True)
+
+    plt.savefig("analise_complexidade.pdf", format="pdf")
+
+    plt.show()
