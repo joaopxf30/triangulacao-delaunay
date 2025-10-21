@@ -5,7 +5,6 @@ from src.dominio import Ponto, Circulo
 
 def gera_nuvem_pontos(numero_pontos: int, circulo: Circulo) -> list[Ponto]:
     nuvem_pontos = []
-    random.seed(10)
 
     for i in range(numero_pontos):
         theta = random.uniform(0, 2 * math.pi)
