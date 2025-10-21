@@ -24,8 +24,8 @@ if __name__ == '__main__':
         pontos = gera_nuvem_pontos(
             numero_pontos=tamanho,
             circulo=Circulo(
-                centro=Ponto(x=0.0, y=0.0),
-                raio=3
+                centro=Ponto(x=5.0, y=5.0),
+                raio=10
             )
         )
 
