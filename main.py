@@ -1,6 +1,6 @@
 from src.dominio import Circulo, Ponto
 from src.nuvem_pontos import gera_nuvem_pontos
-from src.plot import plota_triangulacao, plota_pontos
+from src.plot import plota_triangulacao
 from src.triangulacao_delaunay import TriangulacaoDelaunay
 from src.triangulos_por_aresta import TriangulosPorAresta
 
