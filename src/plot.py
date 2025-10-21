@@ -20,6 +20,7 @@ def plota_triangulacao(triangulacao: set[Triangulo]):
 
     ax.plot([], [], ".", color="black")
 
+    ax.set_title(r"Triangulação de Delaunay $\mathcal{T}_{D}$", fontsize=12)
     ax.set_xlabel(r"$x$", fontsize=12)
     ax.set_ylabel(r"$y$", fontsize=12)
 
